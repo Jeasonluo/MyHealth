@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddEditChecklistActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/info_area_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/editText_name"
+                android:layout_width="248dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:ems="10"
+                android:inputType="text"
+                android:singleLine="true"
+                android:hint="Name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repeat: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/editText_name"
+                app:layout_constraintStart_toStartOf="@id/editText_name"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="@id/textView_repeat"
+                app:layout_constraintStart_toEndOf="@id/textView_repeat"
+                app:layout_constraintBottom_toBottomOf="@id/textView_repeat"/>
+
+            <TextView
+                android:id="@+id/textView_timesEvery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Times Every"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/spinner_times"
+                app:layout_constraintTop_toTopOf="@+id/spinner_times"
+                app:layout_constraintBottom_toBottomOf="@+id/spinner_times"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toEndOf="@+id/textView_timesEvery"
+                app:layout_constraintTop_toTopOf="@+id/textView_timesEvery"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_timesEvery"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_category"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="@+id/editText_name"
+                app:layout_constraintStart_toEndOf="@+id/editText_name"
+                app:layout_constraintBottom_toBottomOf="@id/editText_name"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <EditText
+                android:id="@+id/editText_notes"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:inputType="textMultiLine"
+                android:hint="Notes"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#000000"
+                app:layout_constraintStart_toStartOf="@+id/textView_repeat"
+                app:layout_constraintTop_toBottomOf="@+id/textView_repeat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/time_date_area_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_area_cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/title_add_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="8dp"
+                android:text="Add a Reminder:"
+                android:textSize="20sp"
+                android:textStyle="italic|bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/reminder_time_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_add_reminder"
+                android:layout_alignStart="@+id/title_add_reminder"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Time:"
+                android:textStyle="bold"
+                android:textSize="18sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/reminder_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/reminder_time_title"
+                android:layout_toRightOf="@+id/reminder_time_title"
+                android:layout_marginLeft="12dp"
+                android:gravity="center"
+                android:text="18:28"
+                android:hint="Pick A Time"
+                android:textSize="18sp"
+                android:background="@drawable/tv_outline"
+                android:onClick="showTimeDialog">
+            </TextView>
+
+            <TextView
+                android:id="@+id/reminder_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/reminder_time_title"
+                android:layout_toRightOf="@+id/reminder_time"
+                android:layout_marginLeft="12dp"
+                android:gravity="center"
+                android:hint="Repeation same as item"
+                android:textSize="16sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/reminder_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/reminder_time_title"
+                android:layout_alignStart="@+id/reminder_time_title"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="End Date:"
+                android:textStyle="bold"
+                android:textSize="18sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/reminder_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/reminder_date_title"
+                android:layout_toRightOf="@+id/reminder_date_title"
+                android:layout_marginLeft="12dp"
+                android:gravity="center"
+                android:text=" 10/21/2020 "
+                android:hint="Pick A Date"
+                android:textSize="18sp"
+                android:background="@drawable/tv_outline"
+                android:onClick="showDateDialog">
+            </TextView>
+
+            <Button
+                android:id="@+id/reminder_add_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:layout_toRightOf="@+id/reminder_date"
+                android:layout_below="@+id/reminder_repeat"
+                android:layout_marginLeft="24dp"
+                android:text="Add Reminder"
+                android:textSize="14sp">
+            </Button>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/reminder_area_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_date_area_cardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/reminder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Reminders: "
+                android:textSize="20sp"
+                android:textStyle="italic|bold">
+            </TextView>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/reminder_coordinator_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/reminder_title"
+                android:layout_marginTop="2dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_reminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    tools:listitem="@layout/reminder_item">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </RelativeLayout>
+     </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

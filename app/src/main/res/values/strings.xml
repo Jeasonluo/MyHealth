@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">My Health</string>
+
+    <string-array name="times_lists">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="category_lists">
+        <item>Medicine</item>
+        <item>Diet</item>
+        <item>Exercise</item>
+    </string-array>
+
+    <string-array name="frequency_lists">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+</resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/textView_checkItem_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/textView_checkItem_category"
+            android:maxLines="1"
+            android:text="Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/textView_checkItem_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Category"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/textView_checkItem_timeFrequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_checkItem_name"
+            android:layout_marginStart="8dp"
+            android:text="Time Per Frequency"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/textView_checkItem_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_checkItem_timeFrequency"
+            android:text="Notes Here"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/ratingBar_CheckItem"
+            style="@style/MyRatingBar_Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_checkItem_notes"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:isIndicator="true"
+            android:max="4"
+            android:numStars="4"
+            android:rating="0"
+            android:stepSize="1" />
+
+        <Button
+            android:id="@+id/recordTask_CheckItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/ratingBar_CheckItem"
+            android:layout_alignBottom="@+id/ratingBar_CheckItem"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="8dp"
+            android:minHeight="0dp"
+            android:text="Record Taking"
+            android:textAllCaps="false"
+            android:textSize="16dp"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

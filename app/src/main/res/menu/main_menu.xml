@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/delete_all_checklist"
+        android:title="Delete all checklists"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/category_Medicine"
+        android:title="Medicine"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/category_Diet"
+        android:title="Diet"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/category_Exercise"
+        android:title="Exercise"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/category_Default"
+        android:title="Default"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/category_Completed"
+        android:title="Completed"
+        app:showAsAction="never">
+    </item>
+</menu>

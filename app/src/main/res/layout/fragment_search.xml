@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/fragment_search_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:background="#CB373737">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fragment_search_card"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="4dp"
+            app:cardCornerRadius="6dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/fragment_search_text"
+                    android:layout_width="320dp"
+                    android:layout_height="match_parent"
+                    android:hint="website link here"
+                    android:imeActionLabel="Go"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:text="www.goodrx.com" />
+
+                <ImageButton
+                    android:id="@+id/fragment_search_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/fragment_search_text"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_cancel"
+                    android:background="@color/cardview_light_background"
+                    android:onClick="clearUrl"/>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/fragment_search_card"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/fragment_search_card"
+            android:layout_alignBottom="@id/fragment_search_card"
+            android:layout_marginEnd="4dp"
+            app:cardCornerRadius="8dp">
+
+            <ImageButton
+                android:id="@+id/fragment_search_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_search"
+                android:background="@color/cardview_light_background"
+                android:onClick="changeToWebsite" />
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+    <WebView
+        android:id="@+id/fragment_search_webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragment_search_top"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>
