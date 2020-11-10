@@ -1,4 +1,4 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.data;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

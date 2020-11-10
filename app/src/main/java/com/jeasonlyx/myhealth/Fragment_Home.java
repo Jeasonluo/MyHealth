@@ -13,11 +13,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jeasonlyx.myhealth.adapters.HomeAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jeasonlyx.myhealth.HomeAdapter.HOME_ITEMS;
-import static com.jeasonlyx.myhealth.HomeAdapter.HOME_TITLE;
+import static com.jeasonlyx.myhealth.adapters.HomeAdapter.HOME_ITEMS;
+import static com.jeasonlyx.myhealth.adapters.HomeAdapter.HOME_TITLE;
 
 public class Fragment_Home extends Fragment {
 

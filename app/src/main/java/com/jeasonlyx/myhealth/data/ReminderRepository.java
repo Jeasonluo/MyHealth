@@ -1,4 +1,4 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.data;
 
 import android.app.Application;
 import android.os.AsyncTask;

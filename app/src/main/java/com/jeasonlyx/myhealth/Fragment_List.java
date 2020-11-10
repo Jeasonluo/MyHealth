@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.jeasonlyx.myhealth.adapters.ChecklistAdapter;
+import com.jeasonlyx.myhealth.data.Checklist;
 
 import java.util.List;
 

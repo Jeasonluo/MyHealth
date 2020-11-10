@@ -14,7 +14,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,12 +24,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.jeasonlyx.myhealth.adapters.ReminderAdapter;
+import com.jeasonlyx.myhealth.data.Reminder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +83,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
     private LiveData<List<Reminder>> live_reminders;
 
     private String old_name = "";
+    private int old_repeat = 0;
 
     private MyHealthViewModel viewModel;
 
@@ -109,9 +110,9 @@ public class AddEditChecklistActivity extends AppCompatActivity {
 
 
         // Test Cases
-        reminders = new ArrayList<>(Arrays.asList(
+        /*reminders = new ArrayList<>(Arrays.asList(
                 new Reminder("Medicine 1", 830, 10202020, 1),
-                new Reminder("Medicine 2", 1630, 2082021, 2)));
+                new Reminder("Medicine 2", 1630, 2082021, 2)));*/
 
         add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,11 +190,12 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_ID)){
             setTitle("Edit CheckItem");
-
-            old_name = intent.getStringExtra(EXTRA_NAME);
-
             max_reminders = intent.getIntExtra(EXTRA_TIMES, 1);
             repeat_index = adapter_frequency.getPosition(intent.getStringExtra(EXTRA_FREQUENCY));
+
+            // store original value of name and repeat
+            old_name = intent.getStringExtra(EXTRA_NAME);
+            old_repeat = repeat_index;
 
             editText_name.setText(old_name);
             //numberPicker_times.setValue(intent.getIntExtra(EXTRA_TIMES, 0));
@@ -209,9 +211,9 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         }
 
         // Test cases
-        final List<Reminder> reminders = new ArrayList<>(Arrays.asList(
+        /*final List<Reminder> reminders = new ArrayList<>(Arrays.asList(
                 new Reminder("Medicine 1", 830, 10202020, 1),
-                new Reminder("Medicine 2",1630, 2082021, 2)));
+                new Reminder("Medicine 2",1630, 2082021, 2)));*/
 
         //adapter.submitList(reminders);
         viewModel.getAllReminder().observe(this, new Observer<List<Reminder>>() {
@@ -224,7 +226,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
                     adapter.submitList(null);
                     Toast.makeText(AddEditChecklistActivity.this, "Name Empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    updateRemindersName(name); // make sure old name changed to new name
+                    updateReminders(name, repeat_index); // make sure old name changed to new name
 
                     List<Reminder> reminderList = viewModel.getReminderOfName(name);
                     adapter.submitList(reminderList);
@@ -397,8 +399,8 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             return;
         }
 
-        // if name changed, change all existed reminder name
-        updateRemindersName(name);
+        // if name changed, change all existed reminder name and repeat
+        updateReminders(name, repeat_index);
 
         Intent data_intent = new Intent();
         data_intent.putExtra(EXTRA_NAME, name);
@@ -415,6 +417,21 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         // result for startActivityForResult
         setResult(RESULT_OK, data_intent);
         finish(); // close activity
+    }
+
+
+    public void checkReminderForAddMode(){
+        // get the Intent from MainActivity
+        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+
+        // For edit mode, go ahead
+        if(id != -1) return;
+
+        // For add mode, not save means delete all reminders
+        for(Reminder r: viewModel.getReminderOfName(old_name)){
+            viewModel.delete(r);
+        }
+        Toast.makeText(this, "Reminders Cleared", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -441,6 +458,31 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         old_name = new_name; // assign new value
     }
 
+    // Check if name changed, if yes then change all previous reminders along
+    public void updateReminders(String new_name, int new_repeat){
+        // Get the current name from edit text
+        //String new_name = editText_name.getText().toString().trim();
+        // if not changed, just go ahead
+        if(new_name.equals(old_name) && old_repeat == new_repeat) return;
+        // if is add mode, just assign value to old_name
+        if(old_name.isEmpty() && old_repeat == new_repeat){
+            old_name = new_name;
+            return;
+        }
+        // otherwise, get the existed reminder list
+        List<Reminder> reminderList = viewModel.getReminderOfName(old_name);
+        // for any existed reminder, change name to new name
+        if(reminderList.size() > 0){
+            for(Reminder r: reminderList){
+                r.setName(new_name); // change name
+                r.setRepeat(new_repeat); // change repeat
+                viewModel.update(r); // update database
+            }
+        }
+        old_name = new_name; // assign new value
+        old_repeat = new_repeat;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -455,6 +497,9 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             case R.id.save_checkItem:
                 saveCheckItem();
                 return true;
+            case android.R.id.home:
+                checkReminderForAddMode();
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -1,7 +1,6 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.data;
 
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;

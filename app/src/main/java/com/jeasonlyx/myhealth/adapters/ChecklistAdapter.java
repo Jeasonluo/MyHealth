@@ -1,23 +1,19 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.jeasonlyx.myhealth.R;
+import com.jeasonlyx.myhealth.data.Checklist;
 
 public class ChecklistAdapter extends ListAdapter<Checklist, ChecklistAdapter.ChecklistHolder> {
 

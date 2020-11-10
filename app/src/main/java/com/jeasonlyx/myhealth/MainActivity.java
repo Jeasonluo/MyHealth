@@ -19,13 +19,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.jeasonlyx.myhealth.adapters.ChecklistAdapter;
+import com.jeasonlyx.myhealth.data.Checklist;
 
 import java.util.List;
 

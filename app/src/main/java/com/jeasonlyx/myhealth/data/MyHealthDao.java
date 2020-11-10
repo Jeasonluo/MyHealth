@@ -1,4 +1,4 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

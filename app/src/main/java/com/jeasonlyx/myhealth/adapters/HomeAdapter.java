@@ -1,4 +1,4 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.jeasonlyx.myhealth.R;
 
 import java.util.List;
 

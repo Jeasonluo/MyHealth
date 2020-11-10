@@ -1,4 +1,4 @@
-package com.jeasonlyx.myhealth;
+package com.jeasonlyx.myhealth.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jeasonlyx.myhealth.R;
+import com.jeasonlyx.myhealth.data.Reminder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReminderAdapter extends ListAdapter<Reminder, ReminderAdapter.ReminderViewHolder> {
 
-    protected ReminderAdapter() {
+    public ReminderAdapter() {
         super(DIFF_CALLBACK);
     }
 

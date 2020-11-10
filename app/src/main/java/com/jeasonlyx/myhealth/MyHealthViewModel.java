@@ -6,8 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.jeasonlyx.myhealth.data.Checklist;
+import com.jeasonlyx.myhealth.data.MyHealthRepository;
+import com.jeasonlyx.myhealth.data.Reminder;
+import com.jeasonlyx.myhealth.data.ReminderRepository;
+
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MyHealthViewModel extends AndroidViewModel {
 
