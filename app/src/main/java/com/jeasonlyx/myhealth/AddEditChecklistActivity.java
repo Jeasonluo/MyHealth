@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -81,6 +82,10 @@ public class AddEditChecklistActivity extends AppCompatActivity {
     private List<Reminder> reminders;
     private LiveData<List<Reminder>> live_reminders;
 
+    private String old_name = "";
+
+    private MyHealthViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,24 +103,52 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         reminder_repeat = findViewById(R.id.reminder_repeat);
         add_reminder = findViewById(R.id.reminder_add_button);
 
+        viewModel = new ViewModelProvider(this,
+                new ViewModelProvider.AndroidViewModelFactory(this.getApplication()))
+                .get(MyHealthViewModel.class);
+
+
         // Test Cases
         reminders = new ArrayList<>(Arrays.asList(
-                new Reminder(830, 10202020, 1),
-                new Reminder(1630, 2082021, 2)));
+                new Reminder("Medicine 1", 830, 10202020, 1),
+                new Reminder("Medicine 2", 1630, 2082021, 2)));
 
         add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(adapter.getItemCount() < max_reminders){
+                    String name = editText_name.getText().toString().trim();
+                    // check if name is empty
+                    if(name.isEmpty()){
+                        Toast.makeText(AddEditChecklistActivity.this,
+                                "Please enter Name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     // add to list
-                    Reminder reminder = new Reminder(Reminder.getTime(hour, minute),
+                    Reminder reminder = new Reminder(name,
+                            Reminder.getTime(hour, minute),
                             Reminder.getEnd_date(month,day,year),
                             spinner_frequency.getSelectedItemPosition());
+
+                    // check if the reminder existed
+                    if(viewModel.checkReminderUniqueness(reminder) > 0) {
+                        Toast.makeText(AddEditChecklistActivity.this,
+                                "Reminder Existed, please check existed reminder",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    /*
                     List<Reminder> reminderList = new ArrayList<>(adapter.getCurrentList());
                     reminderList.add(reminder);
                     //reminders.remove(viewHolder.getAdapterPosition());
-                    adapter.submitList(reminderList);
-                    Toast.makeText(AddEditChecklistActivity.this, String.valueOf(reminderList.size()), Toast.LENGTH_SHORT).show();
+                    adapter.submitList(reminderList);*/
+
+                    viewModel.insert(reminder);
+
+                    Toast.makeText(AddEditChecklistActivity.this, "Reminder Added", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AddEditChecklistActivity.this, String.valueOf(reminderList.size()), Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(AddEditChecklistActivity.this, "Exceed Maximum Reminder", Toast.LENGTH_SHORT).show();
                 }
@@ -140,6 +173,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
 
         setUpSpinners();
 
+
         // for snake bar
         coordinatorLayout = findViewById(R.id.reminder_coordinator_layout);
 
@@ -151,35 +185,61 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         adapter = new ReminderAdapter();
         recyclerView.setAdapter(adapter);
 
-        // Test cases
-        final List<Reminder> reminders = new ArrayList<>(Arrays.asList(
-                new Reminder(830, 10202020, 1),
-                new Reminder(1630, 2082021, 2)));
-
-        adapter.submitList(reminders);
-
-
-
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-
+        // Determine Edit or Add
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_ID)){
             setTitle("Edit CheckItem");
 
+            old_name = intent.getStringExtra(EXTRA_NAME);
+
             max_reminders = intent.getIntExtra(EXTRA_TIMES, 1);
             repeat_index = adapter_frequency.getPosition(intent.getStringExtra(EXTRA_FREQUENCY));
 
-            editText_name.setText(intent.getStringExtra(EXTRA_NAME));
+            editText_name.setText(old_name);
             //numberPicker_times.setValue(intent.getIntExtra(EXTRA_TIMES, 0));
             spinner_times.setSelection(adapter_times.getPosition(String.valueOf(max_reminders)));
             spinner_frequency.setSelection(repeat_index);
             spinner_category.setSelection(adapter_category.getPosition(intent.getStringExtra(EXTRA_CATEGORY)));
             editText_notes.setText(intent.getStringExtra(EXTRA_NOTES));
             reminder_repeat.setText(Reminder.getRepeatString(repeat_index));
+
+            adapter.submitList(viewModel.getReminderOfName(old_name));
         }else{
             setTitle("Add CheckItem");
         }
 
+        // Test cases
+        final List<Reminder> reminders = new ArrayList<>(Arrays.asList(
+                new Reminder("Medicine 1", 830, 10202020, 1),
+                new Reminder("Medicine 2",1630, 2082021, 2)));
+
+        //adapter.submitList(reminders);
+        viewModel.getAllReminder().observe(this, new Observer<List<Reminder>>() {
+            @Override
+            public void onChanged(List<Reminder> reminders) {
+                //adapter.submitList(reminders);
+
+                String name = editText_name.getText().toString().trim();
+                if(name.isEmpty()){ // only if there is name, update view
+                    adapter.submitList(null);
+                    Toast.makeText(AddEditChecklistActivity.this, "Name Empty", Toast.LENGTH_SHORT).show();
+                }else{
+                    updateRemindersName(name); // make sure old name changed to new name
+
+                    List<Reminder> reminderList = viewModel.getReminderOfName(name);
+                    adapter.submitList(reminderList);
+                    Toast.makeText(AddEditChecklistActivity.this,
+                            name + "\tRefreshed: " + reminderList.size(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        // set icon for up button
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+
+
+        // recyclerView swipe to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -191,10 +251,13 @@ public class AddEditChecklistActivity extends AppCompatActivity {
                 if(direction == ItemTouchHelper.LEFT){
                     // remove the item from list and database
                     Reminder reminder = adapter.getReminderAt(viewHolder.getAdapterPosition());
+
+                    viewModel.delete(reminder);
+                    /*
                     List<Reminder> reminderList = new ArrayList<>(adapter.getCurrentList());
                     reminderList.remove(reminder);
                     //reminders.remove(viewHolder.getAdapterPosition());
-                    adapter.submitList(reminderList);
+                    adapter.submitList(reminderList);*/
                     Toast.makeText(AddEditChecklistActivity.this, "Remove Reminder", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -308,9 +371,9 @@ public class AddEditChecklistActivity extends AppCompatActivity {
     }
 
     public void saveCheckItem(){
-        MyHealthViewModel viewModel = new ViewModelProvider(this,
+        /*MyHealthViewModel viewModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(getApplication()))
-                .get(MyHealthViewModel.class);
+                .get(MyHealthViewModel.class);*/
 
         String name = editText_name.getText().toString().trim();
         //int times = numberPicker_times.getValue();
@@ -334,6 +397,9 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             return;
         }
 
+        // if name changed, change all existed reminder name
+        updateRemindersName(name);
+
         Intent data_intent = new Intent();
         data_intent.putExtra(EXTRA_NAME, name);
         data_intent.putExtra(EXTRA_TIMES, times);
@@ -350,6 +416,32 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         setResult(RESULT_OK, data_intent);
         finish(); // close activity
     }
+
+
+    // Check if name changed, if yes then change all previous reminders along
+    public void updateRemindersName(String new_name){
+        // Get the current name from edit text
+        //String new_name = editText_name.getText().toString().trim();
+        // if not changed, just go ahead
+        if(new_name.equals(old_name)) return;
+        // if is add mode, just assign value to old_name
+        if(old_name.isEmpty()){
+            old_name = new_name;
+            return;
+        }
+        // otherwise, get the existed reminder list
+        List<Reminder> reminderList = viewModel.getReminderOfName(old_name);
+        // for any existed reminder, change name to new name
+        if(reminderList.size() > 0){
+            for(Reminder r: reminderList){
+                r.setName(new_name); // change name
+                viewModel.update(r); // update database
+            }
+        }
+        old_name = new_name; // assign new value
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();

@@ -216,10 +216,10 @@ public class Fragment_List extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.delete_all_checklist:
+            /*case R.id.delete_all_checklist:
                 viewModel.deleteAllChecklist();
                 Toast.makeText(host_Activity, "All checklists Deleted", Toast.LENGTH_SHORT).show();
-                return true;
+                return true;*/
             case R.id.category_Default:
                 current_category = item.getTitle().toString();
                 adapter.submitList(viewModel.getAllChecklist().getValue());
@@ -227,7 +227,10 @@ public class Fragment_List extends Fragment {
             case R.id.category_Medicine:
             case R.id.category_Diet:
             case R.id.category_Exercise:
-            case R.id.category_Completed:
+            case R.id.category_ToBeCompleted:
+            case R.id.category_Daily:
+            case R.id.category_Weekly:
+            case R.id.category_Monthly:
                 current_category = item.getTitle().toString();
                 adapter.submitList(viewModel.getCategorizedChecklist(current_category));
                 return true;

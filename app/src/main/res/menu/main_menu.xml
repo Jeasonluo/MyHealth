@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/delete_all_checklist"
-        android:title="Delete all checklists"
+        android:id="@+id/category_Default"
+        android:title="Default"
         app:showAsAction="never">
     </item>
+
     <item
         android:id="@+id/category_Medicine"
         android:title="Medicine"
@@ -21,14 +22,26 @@
         android:title="Exercise"
         app:showAsAction="never">
     </item>
+
     <item
-        android:id="@+id/category_Default"
-        android:title="Default"
+        android:id="@+id/category_Daily"
+        android:title="Daily"
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/category_Completed"
-        android:title="Completed"
+        android:id="@+id/category_Weekly"
+        android:title="Weekly"
         app:showAsAction="never">
     </item>
+    <item
+        android:id="@+id/category_Monthly"
+        android:title="Monthly"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/category_ToBeCompleted"
+        android:title="To Be Completed"
+        app:showAsAction="never">
+    </item>
+
 </menu>

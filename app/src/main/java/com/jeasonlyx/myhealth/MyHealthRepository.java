@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -143,7 +145,29 @@ public class MyHealthRepository {
 
         @Override
         protected List<Checklist> doInBackground(String... strings) {
-            return myHealthDao.getCategorizedChecklist(strings[0]);
+            String selected = strings[0];
+            /* // For menu use, add frequency and unfinished
+            HashSet<String> set_category = new HashSet<>();
+            HashMap<String, String> map_frequency = new HashMap<>();
+            //HashSet<String> set_completion = new HashSet<>();
+
+            set_category.add("Default");
+            set_category.add("Medicine");
+            set_category.add("Diet");
+            set_category.add("Exercise");
+
+            map_frequency.put("Daily", "Day");
+            map_frequency.put("Weekly", "Week");
+            map_frequency.put("Monthly", "Month");
+
+            if(set_category.contains(selected))
+                return myHealthDao.getCategorizedChecklist(selected);
+            else if(map_frequency.containsKey(selected))
+                return myHealthDao.getFrequencyChecklist(map_frequency.get(selected));
+
+            return myHealthDao.getToBeCompletedChecklist();
+            */
+            return myHealthDao.getCategorizedChecklist(selected);
         }
     }
 

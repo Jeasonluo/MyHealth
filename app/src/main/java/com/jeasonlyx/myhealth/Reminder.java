@@ -1,9 +1,17 @@
 package com.jeasonlyx.myhealth;
 
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
 import java.util.Objects;
 
+@Entity(tableName = "reminder_table")
 public class Reminder {
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
+    private String name;
 
     private int time;
 
@@ -11,10 +19,19 @@ public class Reminder {
 
     private int repeat;
 
-    public Reminder(int time, int end_date, int repeat) {
+    public Reminder(String name, int time, int end_date, int repeat) {
+        this.name = name;
         this.time = time;
         this.end_date = end_date;
         this.repeat = repeat;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -85,14 +102,14 @@ public class Reminder {
         Reminder reminder = (Reminder) o;
         return time == reminder.time &&
                 end_date == reminder.end_date &&
-                repeat == reminder.repeat;
+                repeat == reminder.repeat &&
+                Objects.equals(name, reminder.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time, end_date, repeat);
+        return Objects.hash(name, time, end_date, repeat);
     }
-
 
     public String getTimeString(){
         return getHour() + ":" + getMinute();
