@@ -83,6 +83,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
     private LiveData<List<Reminder>> live_reminders;
 
     private String old_name = "";
+    private String origin_name = "";
     private int old_repeat = 0;
 
     private MyHealthViewModel viewModel;
@@ -119,12 +120,16 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(adapter.getItemCount() < max_reminders){
                     String name = editText_name.getText().toString().trim();
+                    /*
                     // check if name is empty
                     if(name.isEmpty()){
                         Toast.makeText(AddEditChecklistActivity.this,
                                 "Please enter Name", Toast.LENGTH_SHORT).show();
                         return;
-                    }
+                    }*/
+
+                    // if name is empty or is not unique, should stop activity of saving
+                    if(!checkNameUniqueness(name)) return;
 
                     // add to list
                     Reminder reminder = new Reminder(name,
@@ -195,6 +200,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
 
             // store original value of name and repeat
             old_name = intent.getStringExtra(EXTRA_NAME);
+            origin_name = old_name; // take the original name for duplication check
             old_repeat = repeat_index;
 
             editText_name.setText(old_name);
@@ -226,7 +232,8 @@ public class AddEditChecklistActivity extends AppCompatActivity {
                     adapter.submitList(null);
                     Toast.makeText(AddEditChecklistActivity.this, "Name Empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    updateReminders(name, repeat_index); // make sure old name changed to new name
+                    // make sure any existed reminder's name and repeat information updated
+                    updateReminders(name, repeat_index);
 
                     List<Reminder> reminderList = viewModel.getReminderOfName(name);
                     adapter.submitList(reminderList);
@@ -387,6 +394,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         // get the Intent from MainActivity
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
 
+        /*
         // check if name is empty
         if(name.trim().isEmpty()){
             Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
@@ -398,6 +406,10 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             Toast.makeText(this, "Name must be Unique", Toast.LENGTH_SHORT).show();
             return;
         }
+        */
+
+        // if name is empty or is not unique, should stop activity of saving
+        if(!checkNameUniqueness(name)) return;
 
         // if name changed, change all existed reminder name and repeat
         updateReminders(name, repeat_index);
@@ -417,6 +429,32 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         // result for startActivityForResult
         setResult(RESULT_OK, data_intent);
         finish(); // close activity
+    }
+
+    /*
+    * This method checks if the new_name in TextView is duplicated in database
+    * Return: true means Unique(or in editing mode, still being the same as before)
+    *         false means this name has duplication in database which is not allowed
+    *
+    * */
+    public boolean checkNameUniqueness(String new_name){
+        // check if name is empty
+        if(new_name.isEmpty()){
+            Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // editing mode and same as before
+        if(new_name.equals(origin_name)) return true;
+
+        // Check Name Uniqueness before doing any changes
+        // A new name is entered and the name already existed then should not be updated
+        if(!new_name.equals(old_name) && viewModel.checkNameUniqueness(new_name) != 0){
+            Toast.makeText(this, "Name must be Unique", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -464,7 +502,8 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         //String new_name = editText_name.getText().toString().trim();
         // if not changed, just go ahead
         if(new_name.equals(old_name) && old_repeat == new_repeat) return;
-        // if is add mode, just assign value to old_name
+
+        // if is add mode, just assign value to old_name, because no reminder exists for empty name
         if(old_name.isEmpty() && old_repeat == new_repeat){
             old_name = new_name;
             return;
@@ -497,7 +536,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             case R.id.save_checkItem:
                 saveCheckItem();
                 return true;
-            case android.R.id.home:
+            case android.R.id.home: // For UP Button
                 checkReminderForAddMode();
                 return false;
             default:
