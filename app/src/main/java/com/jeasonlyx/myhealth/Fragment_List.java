@@ -155,8 +155,46 @@ public class Fragment_List extends Fragment {
             }
 
             @Override
-            public void onRatingBarClick() {
-                Toast.makeText(host_Activity, "RatingBar Clicked", Toast.LENGTH_SHORT).show();
+            public void onRecordClick(Checklist checklist) {
+                int completed = checklist.getCompleted();
+                int max = checklist.getTimes();
+                // make sure this is a valid record process
+                if(completed < max){
+                    checklist.setCompleted(completed+1);
+                    viewModel.update(checklist);
+
+                    // do something to record the history here
+
+
+                    Toast.makeText(host_Activity, "Recorded", Toast.LENGTH_SHORT).show();
+                }else{
+                    AlertDialog alert = new AlertDialog.Builder(host_Activity)
+                            .setTitle("Max Amount Exceed Warning")
+                            .setMessage("You have already taken the max amount you set for this item. " +
+                                    "Do you still want to record this taking? " +
+                                    "(You will be able to see this record in history " +
+                                    "but this will not affect your setting on this item)")
+                            .setPositiveButton("Record", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do something to record the history here
+
+                                    Toast.makeText(host_Activity, "Recorded", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(host_Activity, "Record Cancelled", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setCancelable(false)
+                            .create();
+
+                    alert.show();
+                }
             }
         });
 

@@ -102,4 +102,13 @@ public class Checklist {
     public int hashCode() {
         return Objects.hash(name, times, completed, frequency, category, note);
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + "\n" +
+                "Category: " + category + "\n" +
+                "Times Per " + frequency + ": " + times + "\n" +
+                "Completed Times: " + completed + "\n" +
+                "Note: " + note;
+    }
 }

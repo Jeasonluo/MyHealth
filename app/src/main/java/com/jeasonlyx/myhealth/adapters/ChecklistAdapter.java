@@ -1,13 +1,17 @@
 package com.jeasonlyx.myhealth.adapters;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -114,7 +118,7 @@ public class ChecklistAdapter extends ListAdapter<Checklist, ChecklistAdapter.Ch
                     }
                 }
             });
-
+            /*
             ratingBar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -123,15 +127,47 @@ public class ChecklistAdapter extends ListAdapter<Checklist, ChecklistAdapter.Ch
                     }
                     listener.onRatingBarClick();
                 }
-            });
+            });*/
 
             record_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(ratingBar.getRating() < ratingBar.getNumStars()) {
-                        ratingBar.setRating(ratingBar.getRating() + 1);
+                    int position =  getAdapterPosition();
+                    if(listener != null && position != RecyclerView.NO_POSITION)
+                    {
+                        final Checklist checklist = getItem(position);
+                        Context host_Activity = v.getContext();
+
+                        // dialog of confirming recording
+                        AlertDialog alert = new AlertDialog.Builder(host_Activity)
+                                .setTitle("Record Confirmation")
+                                .setMessage("Do you want to record: \n" + checklist.toString())
+                                .setPositiveButton("Record", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        int completed = (int)ratingBar.getRating();
+                                        int max = (int)ratingBar.getNumStars();
+                                        if(completed < max) {
+                                            // do foreground adding stars
+                                            ratingBar.setRating(completed + 1.0f);
+                                        }
+                                        // do background database
+                                        listener.onRecordClick(checklist);
+
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setCancelable(false)
+                                .create();
+
+                        alert.show();
                     }
-                    listener.onRatingBarClick();
                 }
             });
         }
@@ -141,7 +177,7 @@ public class ChecklistAdapter extends ListAdapter<Checklist, ChecklistAdapter.Ch
     public interface OnItemClickListener{
         void onItemClick(Checklist checklist);
         // Here, can add more method for different use, onClick method for example
-        void onRatingBarClick();
+        void onRecordClick(Checklist checklist);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
