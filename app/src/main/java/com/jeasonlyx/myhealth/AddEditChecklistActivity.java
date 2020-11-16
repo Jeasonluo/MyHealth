@@ -62,6 +62,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "com.jeasonlyx.myhealth.EXTRA_ID";
     public static final String EXTRA_NAME = "com.jeasonlyx.myhealth.EXTRA_NAME";
     public static final String EXTRA_TIMES = "com.jeasonlyx.myhealth.EXTRA_TIMES";
+    public static final String EXTRA_COMPLETED = "com.jeasonlyx.myhealth.EXTRA_COMPLETED";
     public static final String EXTRA_FREQUENCY = "com.jeasonlyx.myhealth.EXTRA_FREQUENCY";
     public static final String EXTRA_CATEGORY = "com.jeasonlyx.myhealth.EXTRA_CATEGORY";
     public static final String EXTRA_NOTES = "com.jeasonlyx.myhealth.EXTRA_NOTES";
@@ -85,6 +86,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
     private String old_name = "";
     private String origin_name = "";
     private int old_repeat = 0;
+    private int old_completed = 0;
 
     private MyHealthViewModel viewModel;
 
@@ -202,6 +204,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
             old_name = intent.getStringExtra(EXTRA_NAME);
             origin_name = old_name; // take the original name for duplication check
             old_repeat = repeat_index;
+            old_completed = intent.getIntExtra(EXTRA_COMPLETED, 0);
 
             editText_name.setText(old_name);
             //numberPicker_times.setValue(intent.getIntExtra(EXTRA_TIMES, 0));
@@ -391,6 +394,9 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         String category = spinner_category.getSelectedItem().toString();
         String notes = editText_notes.getText().toString().trim();
 
+        // if new times is less than old_completed then reset completed to 0
+        int completed = (times >= old_completed) ? old_completed : 0;
+
         // get the Intent from MainActivity
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
 
@@ -417,6 +423,7 @@ public class AddEditChecklistActivity extends AppCompatActivity {
         Intent data_intent = new Intent();
         data_intent.putExtra(EXTRA_NAME, name);
         data_intent.putExtra(EXTRA_TIMES, times);
+        data_intent.putExtra(EXTRA_COMPLETED, completed);
         data_intent.putExtra(EXTRA_FREQUENCY, frequency);
         data_intent.putExtra(EXTRA_CATEGORY, category);
         data_intent.putExtra(EXTRA_NOTES, notes);

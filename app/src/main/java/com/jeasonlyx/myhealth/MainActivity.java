@@ -164,11 +164,12 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == ADD_CHECKITEM_REQUEST && resultCode == RESULT_OK){
             String name = data.getStringExtra(AddEditChecklistActivity.EXTRA_NAME);
             int times = data.getIntExtra(AddEditChecklistActivity.EXTRA_TIMES, 1);
+            int completed = data.getIntExtra(AddEditChecklistActivity.EXTRA_COMPLETED, 0);
             String frequency = data.getStringExtra(AddEditChecklistActivity.EXTRA_FREQUENCY);
             String category = data.getStringExtra(AddEditChecklistActivity.EXTRA_CATEGORY);
             String notes = data.getStringExtra(AddEditChecklistActivity.EXTRA_NOTES);
 
-            Checklist checklist = new Checklist(name, times, frequency, category, notes);
+            Checklist checklist = new Checklist(name, times, completed, frequency, category, notes);
             viewModel.insert(checklist);
 
             Toast.makeText(this, "CheckItem Added", Toast.LENGTH_SHORT).show();
@@ -183,11 +184,12 @@ public class MainActivity extends AppCompatActivity {
 
             String name = data.getStringExtra(AddEditChecklistActivity.EXTRA_NAME);
             int times = data.getIntExtra(AddEditChecklistActivity.EXTRA_TIMES, 1);
+            int completed = data.getIntExtra(AddEditChecklistActivity.EXTRA_COMPLETED, 0);
             String frequency = data.getStringExtra(AddEditChecklistActivity.EXTRA_FREQUENCY);
             String category = data.getStringExtra(AddEditChecklistActivity.EXTRA_CATEGORY);
             String notes = data.getStringExtra(AddEditChecklistActivity.EXTRA_NOTES);
 
-            Checklist checklist = new Checklist(name, times, frequency, category, notes);
+            Checklist checklist = new Checklist(name, times, completed, frequency, category, notes);
             checklist.setId(id);  // Vital to make update
             viewModel.update(checklist);
 

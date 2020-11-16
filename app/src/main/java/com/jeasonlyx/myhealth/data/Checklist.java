@@ -16,19 +16,26 @@ public class Checklist {
 
     private int times;
 
+    private int completed;
+
     private String frequency;
 
     private String category;
 
     private String note;
 
-    public Checklist(String name, int times, String frequency, String category, String note) {
+    public Checklist(String name, int times, int completed, String frequency, String category, String note) {
         this.name = name;
         this.times = times;
+        this.completed = completed;
         this.frequency = frequency;
         this.category = category;
         this.note = note;
     }
+
+    public int getCompleted() { return completed; }
+
+    public void setCompleted(int completed) { this.completed = completed; }
 
     public void setId(int id) {
         this.id = id;
@@ -84,6 +91,7 @@ public class Checklist {
         if (o == null || getClass() != o.getClass()) return false;
         Checklist checklist = (Checklist) o;
         return times == checklist.times &&
+                completed == checklist.completed &&
                 name.equals(checklist.name) &&
                 frequency.equals(checklist.frequency) &&
                 category.equals(checklist.category) &&
@@ -92,6 +100,6 @@ public class Checklist {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, times, frequency, category, note);
+        return Objects.hash(name, times, completed, frequency, category, note);
     }
 }

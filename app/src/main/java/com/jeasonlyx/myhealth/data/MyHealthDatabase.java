@@ -52,12 +52,12 @@ public abstract class MyHealthDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            myHealthDao.insert(new Checklist("Medicine 1", 1, "Day", "Medicine", "Notes 1"));
-            myHealthDao.insert(new Checklist("Medicine 2", 2, "Week", "Diet", "Notes 2"));
-            myHealthDao.insert(new Checklist("Medicine 3", 3, "Month", "Exercise", "Notes 3"));
+            myHealthDao.insert(new Checklist("Medicine 1", 1, 0, "Day", "Medicine", "Notes 1"));
+            myHealthDao.insert(new Checklist("Medicine 2", 2, 1, "Week", "Diet", "Notes 2"));
+            myHealthDao.insert(new Checklist("Medicine 3", 3, 2, "Month", "Exercise", "Notes 3"));
 
             reminderDao.insert(new Reminder("Medicine 1", 930, 11302020, 1));
-            reminderDao.insert(new Reminder("Medicine 2", 1135, 12012020, 2));
+            reminderDao.insert(new Reminder("Medicine 2", 1135, 12052020, 2));
             reminderDao.insert(new Reminder("Medicine 3", 2359, 01152021, 3));
 
             return null;

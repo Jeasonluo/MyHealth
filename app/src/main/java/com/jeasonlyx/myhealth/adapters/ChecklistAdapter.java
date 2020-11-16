@@ -58,6 +58,7 @@ public class ChecklistAdapter extends ListAdapter<Checklist, ChecklistAdapter.Ch
         holder.textView_category.setText(String.valueOf(checklist.getCategory()));
         holder.textView_notes.setText(checklist.getNote());
         holder.ratingBar.setNumStars(checklist.getTimes());
+        holder.ratingBar.setRating(checklist.getCompleted());
         holder.ratingBar.setStepSize(1.0f);
     }
 
