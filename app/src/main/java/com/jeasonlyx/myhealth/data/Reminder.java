@@ -111,7 +111,10 @@ public class Reminder {
     }
 
     public String getTimeString(){
-        return getHour() + ":" + getMinute();
+        // make sure there would not be single number in minute
+        int minutes = getMinute();
+        String s_minutes = (minutes <= 9) ? ("0" + minutes) : ("" + minutes);
+        return getHour() + ":" + s_minutes;
     }
 
     public String getDateString(){
@@ -136,7 +139,9 @@ public class Reminder {
     }
 
     public static String getTimeString(int hour, int minutes){
-        return hour + ":" + minutes;
+        // make sure there would not be single number in minute
+        String s_minutes = (minutes <= 9) ? ("0" + minutes) : ("" + minutes);
+        return hour + ":" + s_minutes;
     }
 
     public static String getRepeatString(int repeat){
