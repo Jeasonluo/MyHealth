@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -67,6 +68,17 @@ public class MyHealthRepository {
             e.printStackTrace();
         }
         return unique;
+    }
+
+    /*
+    * This method takes a current calendar object and decide to reset checklists on database
+    * based on their frequency:
+    * Day: Always reset(daily)
+    * Week: Reset on Monday(Weekly)
+    * Month: Reset on first day of each month(Monthly)
+    * */
+    public void resetCompletedOnDate(Calendar calendar){
+        new resetCompletedOnDate(myHealthDao).execute(calendar);
     }
 
 
@@ -184,6 +196,32 @@ public class MyHealthRepository {
         }
     }
 
+    private static class resetCompletedOnDate extends AsyncTask<Calendar, Void, Void>{
 
+        private MyHealthDao myHealthDao;
+
+        public resetCompletedOnDate(MyHealthDao myHealthDao) {
+            this.myHealthDao = myHealthDao;
+        }
+
+        @Override
+        protected Void doInBackground(Calendar... calendars) {
+
+            Calendar calendar = calendars[0];
+            // first day of each month, clear the monthly completed
+            if(calendar.get(Calendar.DAY_OF_MONTH) == 1){
+                myHealthDao.resetMonthCompleted();
+            }
+
+            // Monday set the weekly completed to 0
+            if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+                myHealthDao.resetWeekCompleted();
+            }
+
+            // EveryDay set Day completed to 0
+            myHealthDao.resetDayCompleted();
+            return null;
+        }
+    }
 
 }

@@ -11,6 +11,7 @@ import com.jeasonlyx.myhealth.data.MyHealthRepository;
 import com.jeasonlyx.myhealth.data.Reminder;
 import com.jeasonlyx.myhealth.data.ReminderRepository;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MyHealthViewModel extends AndroidViewModel {
@@ -61,6 +62,8 @@ public class MyHealthViewModel extends AndroidViewModel {
     public int checkNameUniqueness(String name){
         return repository.checkNameUniqueness(name);
     }
+
+    public void resetCompletedOnDate(Calendar calendar) { repository.resetCompletedOnDate(calendar);}
 
 
     /*           Reminder Section           */

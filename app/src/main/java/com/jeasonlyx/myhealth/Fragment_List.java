@@ -30,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.jeasonlyx.myhealth.adapters.ChecklistAdapter;
 import com.jeasonlyx.myhealth.data.Checklist;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -269,12 +270,15 @@ public class Fragment_List extends Fragment {
             case R.id.category_Medicine:
             case R.id.category_Diet:
             case R.id.category_Exercise:
-            case R.id.category_ToBeCompleted:
             case R.id.category_Daily:
             case R.id.category_Weekly:
             case R.id.category_Monthly:
                 current_category = item.getTitle().toString();
                 adapter.submitList(viewModel.getCategorizedChecklist(current_category));
+                return true;
+            case R.id.category_ToBeCompleted:
+                viewModel.resetCompletedOnDate(Calendar.getInstance());
+                Toast.makeText(host_Activity, "Reset Completed", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

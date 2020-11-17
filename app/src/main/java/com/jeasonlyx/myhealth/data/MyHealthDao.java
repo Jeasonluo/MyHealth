@@ -41,5 +41,13 @@ public interface MyHealthDao {
     @Query("SELECT COUNT(*) FROM checklist_TABLE WHERE name = :name")
     int checkNameUniqueness(String name);
 
+    @Query("UPDATE checklist_table SET completed = 0 WHERE frequency = 'Day'")
+    void resetDayCompleted();
+
+    @Query("UPDATE checklist_table SET completed = 0 WHERE frequency = 'Week'")
+    void resetWeekCompleted();
+
+    @Query("UPDATE checklist_table SET completed = 0 WHERE frequency = 'Month'")
+    void resetMonthCompleted();
 
 }
