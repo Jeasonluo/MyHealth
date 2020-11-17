@@ -1,5 +1,6 @@
 package com.jeasonlyx.myhealth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -7,9 +8,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.jeasonlyx.myhealth.services.ReminderForegroundService;
 
 public class NavigationActivity extends AppCompatActivity {
 
@@ -25,6 +28,11 @@ public class NavigationActivity extends AppCompatActivity {
         // Initial it with a fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_fragment_container, new Fragment_Home()).commit();
+
+
+        // Used to start the foreground service
+        Intent foregroundServiceIntent = new Intent(this, ReminderForegroundService.class);
+        ContextCompat.startForegroundService(this, foregroundServiceIntent);
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navListener =
